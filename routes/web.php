@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * RUTAS - web.php
+ * Define las URLs y qué controlador/método las maneja.
+ */
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoriaController;
+
+// Ruta principal: /
+Route::get('/', function () {
+    return view('welcome');
+});
+
+/**
+ * Route::resource - Crea 7 rutas REST automáticamente para el recurso "categorias"
+ * Método  | URI                        | Acción   | Nombre ruta
+ * GET    | /listacategorias           | index    | listacategorias.index
+ * GET    | /listacategorias/create    | create   | listacategorias.create
+ * POST   | /listacategorias           | store    | listacategorias.store
+ * GET    | /listacategorias/{id}      | show     | listacategorias.show
+ * GET    | /listacategorias/{id}/edit | edit     | listacategorias.edit
+ * PUT    | /listacategorias/{id}      | update   | listacategorias.update
+ * DELETE | /listacategorias/{id}      | destroy  | listacategorias.destroy
+ */
+Route::resource('listacategorias', CategoriaController::class);
+
+/*
+Route::get('/calificaciones',[CalificacionesController::class,'index'])
+->name('calificaciones.index');
+
+Route::get('/calificaciones/crear',[CalificacionesController::class,'create'])
+->name('calificaciones.crear');
+
+Route::get('/calificaciones/{id}/editar',[CalificacionesController::class,'edit'])
+->whereNumber('id')->name('calificaciones.editar');
+
+Route::get('/saludo',[CalificacionesController::class,'saludo']);
+*/
+/*
+Route::get('/saludo', function () {
+    return "Hola Mundo, soy Grover";
+});
+
+Route::get('/inicio',function(){
+    return view('calificaciones.index');
+});
+
+Route::get('/crear', function(){
+    return view('calificaciones.crear');
+});
+
+Route::get('/editar', function(){
+    return view('calificaciones.editar');
+});
+
+*/
+?>
