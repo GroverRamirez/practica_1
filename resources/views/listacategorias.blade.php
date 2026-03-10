@@ -61,8 +61,11 @@
                             <td>{{$categoria->nombre}}</td>
                             <td>{{$categoria->descripcion ?? '-'}}</td>
                             <td>
-                                <span class="badge {{$categoria->estado == 'activo' || $categoria->estado ? 'bg-success' : 'bg-secondary'}}">
-                                    {{$categoria->estado == 'activo' || $categoria->estado ? 'Activo' : 'Inactivo'}}
+                                @php
+                                    $esActivo = in_array($categoria->estado, ['activo', 1, '1']);
+                                @endphp
+                                <span class="badge {{ $esActivo ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ $esActivo ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>
                             <td>

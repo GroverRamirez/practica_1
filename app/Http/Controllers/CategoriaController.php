@@ -71,9 +71,16 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, Categoria $listacategoria)
     {
-        $data = $request->all();
-        $data['estado'] = $request->input('estado', 'activo');
-        $listacategoria->update($data); // UPDATE en la BD
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'descripcion' => 'nullable|string',
+            'estado' => 'required|in:activo,inactivo',
+        ]);
+        $listacategoria->update([
+            'nombre' => $request->input('nombre'),
+            'descripcion' => $request->input('descripcion'),
+            'estado' => $request->input('estado'),
+        ]);
         return redirect()->route('listacategorias.index')
             ->with('success', 'Categoría actualizada exitosamente');
     }

@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="{{route('listaproductos.index')}}" class="text-white text-decoration-none {{request()->routeIs('listaproductos.*') ? 'fw-bold' : ''}}">
+                    <a href="" class="text-white text-decoration-none {{request()->routeIs('listaproductos.*') ? 'fw-bold' : ''}}">
                         Productos
                     </a>
                 </li>
@@ -30,7 +30,7 @@
         <div class="card">
             <div class="card-body">
                 {{-- action: PUT /listacategorias/{id} - Envía los datos al método update() --}}
-                <form action="{{route('listacategorias.update', $listacategoria->id)}}" method="post">
+                <form action="{{route('listacategorias.update', $listacategoria)}}" method="post">
                     @csrf {{-- Token de seguridad obligatorio en formularios POST --}}
                     @method('PUT') {{-- Los navegadores solo envían GET/POST; @method simula PUT --}}
                     <div class="mb-3">
@@ -44,10 +44,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
-                        @php $estadoActual = old('estado', $listacategoria->estado ?? 'activo'); @endphp
+                        @php
+                            $estadoActual = old('estado', $listacategoria->estado);
+                            if (in_array($estadoActual, [1, '1', true])) $estadoActual = 'activo';
+                            if (in_array($estadoActual, [0, '0', false])) $estadoActual = 'inactivo';
+                            if (!in_array($estadoActual, ['activo', 'inactivo'])) $estadoActual = 'activo';
+                        @endphp
                         <select class="form-select" name="estado" id="estado" required>
-                            <option value="activo" {{in_array($estadoActual, ['activo', 1, '1']) ? 'selected' : ''}}>Activo</option>
-                            <option value="inactivo" {{in_array($estadoActual, ['inactivo', 0, '0']) ? 'selected' : ''}}>Inactivo</option>
+                            <option value="activo" {{ $estadoActual === 'activo' ? 'selected' : '' }}>Activo</option>
+                            <option value="inactivo" {{ $estadoActual === 'inactivo' ? 'selected' : '' }}>Inactivo</option>
                         </select>
                     </div>
                     <div>
