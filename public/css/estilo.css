@@ -1,0 +1,105 @@
+:root {
+    --navy-900: #14213d;
+    --navy-800: #1f2f56;
+    --steel-500: #4f6b88;
+    --mist-100: #f4f7fb;
+    --mist-200: #e8eef5;
+    --ink-900: #1f2937;
+    --sky-300: #d7e6f8;
+}
+
+body {
+    background: linear-gradient(180deg, #f8fafc 0%, var(--mist-100) 100%);
+    color: var(--ink-900);
+}
+
+.sidebar-panel {
+    width: 270px;
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+}
+
+.sidebar-link {
+    color: rgba(255, 255, 255, 0.88);
+    transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.12);
+    transform: translateX(2px);
+}
+
+.sidebar-link.active {
+    background-color: var(--sky-300);
+    color: #0f172a !important;
+    box-shadow: 0 10px 24px rgba(9, 20, 40, 0.18);
+}
+
+.content-shell {
+    background-color: rgba(255, 255, 255, 0.72);
+}
+
+.panel-card {
+    border: 1px solid var(--mist-200);
+    border-radius: 1rem;
+    box-shadow: 0 14px 34px rgba(20, 33, 61, 0.08);
+}
+
+.table-theme thead th {
+    background-color: #eef3f9;
+    color: var(--navy-900);
+    font-weight: 700;
+    border-bottom: 1px solid var(--mist-200);
+}
+
+.table-theme tbody tr:hover {
+    background-color: #f7fbff;
+}
+
+.btn-primary-theme {
+    background-color: #19335a;
+    border-color: #19335a;
+    color: #ffffff;
+}
+
+.btn-primary-theme:hover {
+    background-color: #24446f;
+    border-color: #24446f;
+    color: #ffffff;
+}
+
+.btn-primary-theme:focus,
+.btn-primary-theme:active {
+    background-color: #16304f;
+    border-color: #16304f;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.25rem rgba(25, 51, 90, 0.18);
+}
+
+.badge-soft-success {
+    background-color: #e7f5ee;
+    color: #0f5132;
+}
+
+.badge-soft-danger {
+    background-color: #fbe9eb;
+    color: #842029;
+}
+
+.price-text {
+    color: var(--navy-800);
+    font-weight: 700;
+}
+
+.stock-pill {
+    background-color: #eef3f9;
+    color: var(--steel-500);
+}
+
+.section-label {
+    color: var(--steel-500);
+}
+
+.section-title {
+    color: var(--navy-900);
+}

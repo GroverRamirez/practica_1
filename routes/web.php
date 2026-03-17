@@ -9,6 +9,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ProductoController;
 
 // Ruta principal: /
 // Cuando el usuario entra a la raíz del proyecto, Laravel devuelve
@@ -17,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('listacategorias', CategoriaController::class);
+// Este resource crea todas las rutas del CRUD de productos sin definirlas una por una.
+// Laravel genera index, create, store, show, edit, update y destroy automáticamente.
+Route::resource('listaproductos', ProductoController::class);
 /**
  * Route::resource - Crea 7 rutas REST automáticamente para el recurso "categorias"
  * Método  | URI                        | Acción   | Nombre ruta
@@ -34,7 +39,7 @@ Route::get('/', function () {
 // 'listacategorias' define el segmento de URL del recurso.
 // CategoriaController::class indica el controlador que atenderá
 // las operaciones de listar, crear, guardar, editar, actualizar y eliminar.
-Route::resource('listacategorias', CategoriaController::class);
+
 
 /*
 Route::get('/calificaciones',[CalificacionesController::class,'index'])
