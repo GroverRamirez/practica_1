@@ -3,12 +3,16 @@
 /**
  * RUTAS - web.php
  * Define las URLs y qué controlador/método las maneja.
+ * Este archivo funciona como el punto de entrada del flujo web:
+ * aquí se decide qué acción del sistema responderá a cada URL.
  */
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 
 // Ruta principal: /
+// Cuando el usuario entra a la raíz del proyecto, Laravel devuelve
+// la vista de bienvenida del sistema.
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,6 +28,12 @@ Route::get('/', function () {
  * PUT    | /listacategorias/{id}      | update   | listacategorias.update
  * DELETE | /listacategorias/{id}      | destroy  | listacategorias.destroy
  */
+// Route::resource() genera automáticamente las rutas del CRUD
+// siguiendo la convención REST de Laravel.
+//
+// 'listacategorias' define el segmento de URL del recurso.
+// CategoriaController::class indica el controlador que atenderá
+// las operaciones de listar, crear, guardar, editar, actualizar y eliminar.
 Route::resource('listacategorias', CategoriaController::class);
 
 /*

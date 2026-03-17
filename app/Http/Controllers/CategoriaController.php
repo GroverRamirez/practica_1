@@ -21,7 +21,9 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::all(); // Consulta: SELECT * FROM categorias
-        return view('listacategorias', compact('categorias')); // Envía $categorias a la vista
+        // Ahora la vista está en la carpeta 'categorias'; antes se llamaba 'listacategorias'.
+        // Esta versión es mejor porque organiza el módulo por carpeta y facilita su mantenimiento.
+        return view('categorias.index', compact('categorias')); // Envía $categorias a la vista
     }
 
     /**
@@ -30,7 +32,9 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return view('createcategorias');
+        // Ahora carga 'categorias.create'; antes apuntaba a 'createcategorias'.
+        // Esta estructura es mejor porque hace consistente el nombre del módulo y de sus vistas.
+        return view('categorias.create');
     }
 
     /**
@@ -62,7 +66,9 @@ class CategoriaController extends Controller
      */
     public function edit(Categoria $listacategoria)
     {
-        return view('editcategorias', compact('listacategoria')); // Pasa la categoría a editar
+        // Ahora usa 'categorias.edit'; antes usaba 'editcategorias'.
+        // Es mejor porque mantiene juntas las vistas del módulo y evita nombres dispersos.
+        return view('categorias.edit', compact('listacategoria')); // Pasa la categoría a editar
     }
 
     /**

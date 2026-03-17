@@ -11,7 +11,7 @@ class Producto extends Model
     //relacion de muschos a unio belongsTo cada producto pertenece a una sola categoria
     public function categoria()
     {
-        return $this->belongsTo('Categoria::class');
+        return $this->belongsTo(Categoria::class);
     }
 
 }
