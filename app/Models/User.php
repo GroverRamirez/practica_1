@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Campos que pueden asignarse masivamente al registrar o actualizar usuarios.
      *
      * @var list<string>
      */
@@ -24,7 +23,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Campos sensibles que no deben exponerse al serializar el modelo.
      *
      * @var list<string>
      */
@@ -34,7 +33,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Convierte atributos para que Laravel los trate con el tipo correcto.
+     * email_verified_at se maneja como fecha y password se cifra automáticamente.
      *
      * @return array<string, string>
      */
