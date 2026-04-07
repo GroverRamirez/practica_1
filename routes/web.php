@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
 
     // Los módulos académicos quedan restringidos hasta que Laravel valide la sesión.
     Route::resource('listacategorias', CategoriaController::class);
+    Route::get('listaproductos/reporte/pdf', [ProductoController::class, 'reportePdf'])
+        ->name('listaproductos.pdf');
     Route::resource('listaproductos', ProductoController::class);
 });
 
