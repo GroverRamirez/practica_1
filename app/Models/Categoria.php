@@ -28,7 +28,7 @@ class Categoria extends Model
      * hasMany = un registro (categoría) puede tener varios relacionados (productos).
      * Uso: $categoria->producto
      */
-    public function producto()
+    public function productos()
     {
         // hasMany() indica una relación de uno a muchos:
         // una categoría puede tener varios productos asociados.

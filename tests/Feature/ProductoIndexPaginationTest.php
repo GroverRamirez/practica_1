@@ -35,7 +35,7 @@ class ProductoIndexPaginationTest extends TestCase
 
         $primeraPagina = $this
             ->actingAs($user)
-            ->get(route('listaproductos.index'));
+            ->get(route('productos.index'));
 
         $primeraPagina->assertOk();
         $primeraPagina->assertSee('Producto 01');
@@ -44,7 +44,7 @@ class ProductoIndexPaginationTest extends TestCase
 
         $segundaPagina = $this
             ->actingAs($user)
-            ->get(route('listaproductos.index', ['page' => 2]));
+            ->get(route('productos.index', ['page' => 2]));
 
         $segundaPagina->assertOk();
         $segundaPagina->assertSee('Producto 08');

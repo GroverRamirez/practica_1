@@ -10,25 +10,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Http\Requests\StoreCategoriaRequest;
+use App\Http\Requests\UpdateCategoriaRequest;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
     /**
      * index - Lista todas las categorías.
-     * Ruta: GET /listacategorias
+     * Ruta: GET /categorias
      */
     public function index()
     {
-        $categorias = Categoria::all(); // Consulta: SELECT * FROM categorias
-        // Ahora la vista está en la carpeta 'categorias'; antes se llamaba 'listacategorias'.
+        $categorias = Categoria::paginate(10); // Consulta: SELECT * FROM categorias con paginación
+        // Ahora la vista está en la carpeta 'categorias'; antes se llamaba 'categorias'.
         // Esta versión es mejor porque organiza el módulo por carpeta y facilita su mantenimiento.
         return view('categorias.index', compact('categorias')); // Envía $categorias a la vista
     }
 
     /**
      * create - Muestra el formulario para crear.
-     * Ruta: GET /listacategorias/create
+     * Ruta: GET /categorias/create
      */
     public function create()
     {
@@ -39,66 +41,50 @@ class CategoriaController extends Controller
 
     /**
      * store - Guarda una nueva categoría (procesa el POST del formulario).
-     * Ruta: POST /listacategorias
+     * Ruta: POST /categorias
      */
-    public function store(Request $request)
+    public function store(StoreCategoriaRequest $request)
     {
-        $data = $request->all(); // Obtiene todos los datos del formulario
+        $data = $request->validated();
         $data['estado'] = $request->input('estado', 'activo'); // Estado por defecto
         Categoria::create($data); // INSERT en la BD (usa $fillable del modelo)
-        return redirect()->route('listacategorias.index')
+        return redirect()->route('categorias.index')
             ->with('success', 'Categoría creada exitosamente'); // Redirige y guarda mensaje en sesión
     }
 
-    /**
-     * show - Muestra una categoría específica (no implementado).
-     * Ruta: GET /listacategorias/{id}
-     */
-    public function show(Categoria $categoria)
-    {
-        //
-    }
+
 
     /**
      * edit - Muestra el formulario para editar.
-     * Ruta: GET /listacategorias/{id}/edit
+     * Ruta: GET /categorias/{id}/edit
      * Route Model Binding: Laravel inyecta la Categoria por el ID de la URL
      */
-    public function edit(Categoria $listacategoria)
+    public function edit(Categoria $categoria)
     {
         // Ahora usa 'categorias.edit'; antes usaba 'editcategorias'.
         // Es mejor porque mantiene juntas las vistas del módulo y evita nombres dispersos.
-        return view('categorias.edit', compact('listacategoria')); // Pasa la categoría a editar
+        return view('categorias.edit', compact('categoria')); // Pasa la categoría a editar
     }
 
     /**
      * update - Actualiza una categoría (procesa el PUT del formulario).
-     * Ruta: PUT/PATCH /listacategorias/{id}
+     * Ruta: PUT/PATCH /categorias/{id}
      */
-    public function update(Request $request, Categoria $listacategoria)
+    public function update(UpdateCategoriaRequest $request, Categoria $categoria)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'nullable|string',
-            'estado' => 'required|in:activo,inactivo',
-        ]);
-        $listacategoria->update([
-            'nombre' => $request->input('nombre'),
-            'descripcion' => $request->input('descripcion'),
-            'estado' => $request->input('estado'),
-        ]);
-        return redirect()->route('listacategorias.index')
+        $categoria->update($request->validated());
+        return redirect()->route('categorias.index')
             ->with('success', 'Categoría actualizada exitosamente');
     }
 
     /**
      * destroy - Elimina una categoría.
-     * Ruta: DELETE /listacategorias/{id}
+     * Ruta: DELETE /categorias/{id}
      */
-    public function destroy(Categoria $listacategoria)
+    public function destroy(Categoria $categoria)
     {
-        $listacategoria->delete(); // DELETE en la BD
-        return redirect()->route('listacategorias.index')
+        $categoria->delete(); // DELETE en la BD
+        return redirect()->route('categorias.index')
             ->with('success', 'Categoría eliminada exitosamente');
     }
 }

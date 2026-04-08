@@ -115,7 +115,7 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 6%;">ID</th>
+                <th style="width: 6%;">Nro</th>
                 <th style="width: 18%;">Nombre</th>
                 <th style="width: 28%;">Descripcion</th>
                 <th style="width: 16%;">Categoria</th>
@@ -127,7 +127,7 @@
         <tbody>
             @forelse($productos as $producto)
                 <tr>
-                    <td>{{ $producto->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $producto->nombre }}</td>
                     <td>{{ $producto->descripcion ?: '-' }}</td>
                     <td>{{ $producto->categoria->nombre ?? 'Sin categoria' }}</td>

@@ -1,51 +1,75 @@
-@extends('layouts.app') {{-- Usa el layout compartido para que esta vista solo se concentre en el formulario del módulo productos. --}}
+@extends('layouts.app') 
 
-@section('title', 'Nuevo Producto') {{-- Envía el título de la pestaña al layout mediante @yield('title'). --}}
-@section('header', 'Nuevo Producto') {{-- Envía el encabezado principal que el layout mostrará arriba del contenido. --}}
+@section('title', 'Nuevo Producto') 
+@section('header', 'Agregar un Nuevo Producto') 
 
-@section('content') {{-- Este bloque representa el contenido principal de la pantalla de creación. --}}
-    <div class="card">
-        <div class="card-body">
-            {{-- Este formulario envía los datos al método store() del controlador para registrar un nuevo producto. --}}
-            <form action="{{ route('listaproductos.store') }}" method="post">
-                @csrf {{-- Inserta un token de seguridad que Laravel exige para aceptar formularios POST. --}}
+@section('content') 
+    <div class="panel-card bg-white mt-2 mb-4 mx-auto" style="max-width: 800px;">
+        <div class="card-body p-4 p-lg-5">
+            <h5 class="table-summary-title mb-4 border-bottom pb-3">Información del Producto</h5>
+            
+            <form action="{{ route('productos.store') }}" method="post">
+                @csrf 
 
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" value="{{ old('nombre') }}" required>
+                <div class="row g-4">
+                    <div class="col-md-12">
+                        <label for="nombre" class="form-label fw-semibold text-secondary">Nombre del producto <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" id="nombre" value="{{ old('nombre') }}" placeholder="Ej. Asus ROG Strix" required>
+                        @error('nombre')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="descripcion" class="form-label fw-semibold text-secondary">Descripción</label>
+                        <textarea class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion" rows="4" placeholder="Detalles técnicos y especificaciones...">{{ old('descripcion') }}</textarea>
+                        @error('descripcion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="precio" class="form-label fw-semibold text-secondary">Precio (Bs.) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">Bs.</span>
+                            <input type="number" step="0.01" class="form-control @error('precio') is-invalid @enderror" name="precio" id="precio" value="{{ old('precio') }}" placeholder="0.00" required>
+                            @error('precio')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="stock" class="form-label fw-semibold text-secondary">Stock Inicial <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control @error('stock') is-invalid @enderror" name="stock" id="stock" value="{{ old('stock', 0) }}" required>
+                        @error('stock')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="categoria_id" class="form-label fw-semibold text-secondary">Categoría <span class="text-danger">*</span></label>
+                        <select class="form-select form-control @error('categoria_id') is-invalid @enderror" name="categoria_id" id="categoria_id" required>
+                            <option value="">Seleccione una categoría</option>
+                            @foreach($categorias as $categoria)
+                                <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                                    {{ $categoria->nombre }} ({{ $categoria->estado }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('categoria_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="form-text mt-2 text-muted"><i class="bi bi-info-circle me-1"></i> Si la categoría no existe, créela primero en el módulo de Categorías.</div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea class="form-control" name="descripcion" id="descripcion" rows="3">{{ old('descripcion') }}</textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="precio" class="form-label">Precio</label>
-                    <input type="number" step="0.01" class="form-control" name="precio" id="precio" value="{{ old('precio') }}" required> {{-- Antes no tenía tipo numérico; ahora ayuda a capturar correctamente un precio decimal. --}}
-                </div>
-
-                <div class="mb-3">
-                    <label for="stock" class="form-label">Stock</label>
-                    <input type="number" class="form-control" name="stock" id="stock" value="{{ old('stock') }}" required> {{-- Antes tenía atributos mal armados; ahora queda como un input numérico válido. --}}
-                </div>
-
-                <div class="mb-3">
-                    <label for="categoria_id" class="form-label">Categoría</label>
-                    {{-- El select permite asociar el producto con una categoría existente. --}}
-                    <select class="form-select" name="categoria_id" id="categoria_id" required>
-                        <option value="">Seleccione una categoría</option>
-                        @foreach($categorias as $categoria) {{-- $categorias llega desde el controlador y se recorre para llenar las opciones del select. --}}
-                            <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
-                                {{ $categoria->nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <a href="{{ route('listaproductos.index') }}" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                <div class="mt-5 d-flex justify-content-end gap-2 pt-3 border-top">
+                    <a href="{{ route('productos.index') }}" class="btn btn-soft-secondary px-4">Cancelar</a>
+                    <button type="submit" class="btn btn-primary-theme px-4 d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-save2"></i>
+                        Confirmar Registro
+                    </button>
                 </div>
             </form>
         </div>

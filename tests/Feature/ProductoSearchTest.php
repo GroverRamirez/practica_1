@@ -51,7 +51,7 @@ class ProductoSearchTest extends TestCase
         // La búsqueda usa GET y viaja como ?buscar=... hacia el mismo index del listado.
         $response = $this
             ->actingAs($user)
-            ->get(route('listaproductos.index', ['buscar' => 'Laptop']));
+            ->get(route('productos.index', ['buscar' => 'Laptop']));
 
         $response->assertOk();
         $response->assertSee('MacBook Air');

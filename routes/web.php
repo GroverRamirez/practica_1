@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
     // Breeze redirige aquí después de login o registro; desde este punto el proyecto
     // envía al módulo de productos como puerta de entrada del sistema.
     Route::get('/dashboard', function () {
-        return redirect()->route('listaproductos.index');
+        return redirect()->route('productos.index');
     })->name('dashboard');
 
     // El perfil también pertenece al área privada porque depende del usuario autenticado.
@@ -21,11 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Los módulos académicos quedan restringidos hasta que Laravel valide la sesión.
-    Route::resource('listacategorias', CategoriaController::class);
-    Route::get('listaproductos/reporte/pdf', [ProductoController::class, 'reportePdf'])
-        ->name('listaproductos.pdf');
-    Route::resource('listaproductos', ProductoController::class);
+    Route::resource('categorias', CategoriaController::class)->except(['show']);
+    Route::get('productos/reporte/pdf', [ProductoController::class, 'reportePdf'])
+        ->name('productos.pdf');
+    Route::resource('productos', ProductoController::class)->except(['show']);
 });
 
 // Se separan las rutas de autenticación para mantener ordenado el módulo.

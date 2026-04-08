@@ -31,7 +31,7 @@ class ProductoReportePdfTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->get(route('listaproductos.pdf'));
+            ->get(route('productos.pdf'));
 
         $response->assertOk();
         $response->assertHeader('content-type', 'application/pdf');
@@ -40,7 +40,7 @@ class ProductoReportePdfTest extends TestCase
 
     public function test_guest_is_redirected_when_trying_to_access_products_pdf_report(): void
     {
-        $response = $this->get(route('listaproductos.pdf'));
+        $response = $this->get(route('productos.pdf'));
 
         $response->assertRedirect(route('login'));
     }

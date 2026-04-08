@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Http\Requests\StoreProductoRequest;
+use App\Http\Requests\UpdateProductoRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -60,61 +62,50 @@ class ProductoController extends Controller
 
     public function create()
     {
-        $categorias = Categoria::all();
+        // Solo enviar categorías activas para nuevos productos.
+        $categorias = Categoria::where('estado', 'activo')->get();
 
         return view('productos.create', compact('categorias'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProductoRequest $request)
     {
-        $data = $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'nullable|string',
-            'precio' => 'required|numeric',
-            'stock' => 'required|integer',
-            'categoria_id' => 'required|exists:categorias,id',
-        ]);
+        $data = $request->validated();
 
         Producto::create($data);
 
-        return redirect()->route('listaproductos.index')
+        return redirect()->route('productos.index')
             ->with('success', 'Producto creado exitosamente');
     }
 
-    public function show(Producto $listaproducto)
-    {
-        //
-    }
 
-    public function edit(Producto $listaproducto)
+
+    public function edit(Producto $producto)
     {
-        $categorias = Categoria::all();
-        $producto = $listaproducto;
+        // Traemos las categorías activas, pero también incluimos la categoría actual del producto
+        // en caso de que su categoría de origen haya sido marcada como inactiva después de crearse.
+        $categorias = Categoria::where('estado', 'activo')
+            ->orWhere('id', $producto->categoria_id)
+            ->get();
 
         return view('productos.edit', compact('producto', 'categorias'));
     }
 
-    public function update(Request $request, Producto $listaproducto)
+    public function update(UpdateProductoRequest $request, Producto $producto)
     {
-        $data = $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'nullable|string',
-            'precio' => 'required|numeric',
-            'stock' => 'required|integer',
-            'categoria_id' => 'required|exists:categorias,id',
-        ]);
+        $data = $request->validated();
 
-        $listaproducto->update($data);
+        $producto->update($data);
 
-        return redirect()->route('listaproductos.index')
+        return redirect()->route('productos.index')
             ->with('success', 'Producto actualizado exitosamente');
     }
 
-    public function destroy(Producto $listaproducto)
+    public function destroy(Producto $producto)
     {
-        $listaproducto->delete();
+        $producto->delete();
 
-        return redirect()->route('listaproductos.index')
+        return redirect()->route('productos.index')
             ->with('success', 'Producto eliminado exitosamente');
     }
 }
